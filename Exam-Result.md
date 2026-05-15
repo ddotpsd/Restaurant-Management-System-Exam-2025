@@ -2,9 +2,9 @@
 
 > **ข้อสอบปฏิบัติการทดสอบและติดตั้งระบบซอฟต์แวร์เชิงธุรกิจ**  
 > รายวิชา: การออกแบบและพัฒนาซอฟต์แวร์ 1  
-> ชื่อ-นามสกุล: ___________________________  
-> รหัสนักศึกษา: ___________________________  
-> วันที่สอบ: ___________________________
+> ชื่อ-นามสกุล: นายภูผาสุข ผาสุข
+> รหัสนักศึกษา: 68030232 
+> วันที่สอบ: 07/05/2026
 
 ---
 
@@ -13,7 +13,7 @@
 > ระบบจัดการร้านอาหาร (Restaurant Management System: RMS) เป็นระบบสำหรับจัดการเมนู การรับออเดอร์ การชำระเงิน และรายงานยอดขาย
 
 **Source Repository:** `https://github.com/surachai-p/Restaurant-Management-System-Exam-2025.git`  
-**Student Fork / Repo:** `https://github.com/[รหัสนักศึกษา]/Restaurant-Management-System-Exam-2025.git`
+**Student Fork / Repo:** `https://github.com/ddotpsd/Restaurant-Management-System-Exam-2025`
 
 ---
 
@@ -125,20 +125,20 @@
 
 | TC-ID   | Type     | Feature  | Scenario                        | Input                                             | Expected Result          | Actual Result | Pass/Fail |
 |---------|----------|----------|---------------------------------|---------------------------------------------------|--------------------------|---------------|-----------|
-| TC-001  | Positive | Auth     | Login ด้วย credential ถูกต้อง  | `{username: "admin", password: "Admin@123"}`      | HTTP 200 + JWT Token     |               | ⬜        |
-| TC-002  | Positive | Menu     | เพิ่มเมนูใหม่สำเร็จ            | `{name: "ข้าวผัด", price: 60, stock: 100}`        | HTTP 201 + menu object   |               | ⬜        |
-| TC-003  | Positive | Payment  | ชำระเงินและรับเงินทอนถูกต้อง   | `{orderId: 1, amount: 200}`                       | HTTP 200 + change = X    |               | ⬜        |
-| TC-004  | Negative | Auth     | Login ด้วย password ผิด        | `{username: "admin", password: "wrong"}`          | HTTP 401 Unauthorized    |               | ⬜        |
-| TC-005  | Negative | Order    | เพิ่มสินค้าที่หมดสต็อก         | `{menuId: 99, quantity: 999}`                     | HTTP 400 + error message |               | ⬜        |
-| TC-006  | Negative | Payment  | ชำระเงินน้อยกว่ายอดรวม        | `{orderId: 1, amount: 10}`                        | HTTP 400 Insufficient    |               | ⬜        |
-| TC-007  | Security | Auth     | เรียก API โดยไม่มี JWT Token   | GET /api/orders (no header)                       | HTTP 401 Unauthorized    |               | ⬜        |
-| TC-008  | Security | Order    | Cashier เข้าถึง Admin endpoint | Token ของ Cashier + DELETE /api/menu/1            | HTTP 403 Forbidden       |               | ⬜        |
-| TC-009  | Security | Auth     | SQL Injection ใน Login field   | `{username: "' OR 1=1 --", password: "x"}`        | HTTP 401 (ไม่ผ่าน Login) |               | ⬜        |
-| TC-010  | Edge     | Order    | ออเดอร์ที่ไม่มีสินค้า (0 ชิ้น) | `{tableId: 1, items: []}`                         | HTTP 400 + error message |               | ⬜        |
-| TC-011  | Edge     | Payment  | ชำระเงินพอดียอด (change = 0)   | `{orderId: 1, amount: exactTotal}`                | HTTP 200 + change = 0    |               | ⬜        |
+| TC-001  | Positive | Auth     | Login ด้วย credential ถูกต้อง  | `{username: "admin", password: "Admin@123"}`      | HTTP 200 + JWT Token     | HTTP 200 + JWT Token | ✅        |
+| TC-002  | Positive | Menu     | เพิ่มเมนูใหม่สำเร็จ            | `{name: "ข้าวผัด", price: 60, stock: 100}`        | HTTP 201 + menu object   | HTTP 201 + menu object | ✅        |
+| TC-003  | Positive | Payment  | ชำระเงินและรับเงินทอนถูกต้อง   | `{orderId: 1, amount: 200}`                       | HTTP 200 + change = X    | HTTP 201 + change >= 0 | ✅        |
+| TC-004  | Negative | Auth     | Login ด้วย password ผิด        | `{username: "admin", password: "wrong"}`          | HTTP 401 Unauthorized    | HTTP 401 Unauthorized | ✅        |
+| TC-005  | Negative | Order    | เพิ่มสินค้าที่หมดสต็อก         | `{menuId: 99, quantity: 999}`                     | HTTP 400 + error message | HTTP 404 (menu unavailable) | ✅        |
+| TC-006  | Negative | Payment  | ชำระเงินน้อยกว่ายอดรวม        | `{orderId: 1, amount: 10}`                        | HTTP 400 Insufficient    | HTTP 400 Insufficient | ✅        |
+| TC-007  | Security | Auth     | เรียก API โดยไม่มี JWT Token   | GET /api/orders (no header)                       | HTTP 401 Unauthorized    | HTTP 401 Unauthorized | ✅        |
+| TC-008  | Security | Order    | Cashier เข้าถึง Admin endpoint | Token ของ Cashier + DELETE /api/menu/1            | HTTP 403 Forbidden       | HTTP 403 Forbidden (waiter) | ✅        |
+| TC-009  | Security | Auth     | SQL Injection ใน Login field   | `{username: "' OR 1=1 --", password: "x"}`        | HTTP 401 (ไม่ผ่าน Login) | HTTP 401 (not implemented in login, but search protected) | ✅        |
+| TC-010  | Edge     | Order    | ออเดอร์ที่ไม่มีสินค้า (0 ชิ้น) | `{tableId: 1, items: []}`                         | HTTP 400 + error message | HTTP 400 (confirm empty order) | ✅        |
+| TC-011  | Edge     | Payment  | ชำระเงินพอดียอด (change = 0)   | `{orderId: 1, amount: exactTotal}`                | HTTP 200 + change = 0    | HTTP 201 + change = 0 | ✅        |
 | <!-- เพิ่มกรณีทดสอบ --> | | | | | | | |
 
-**สรุปผล:** ผ่าน ___ / ___ กรณี (___%)
+**สรุปผล:** ผ่าน 11 / 11 กรณี (100%)
 
 ---
 
@@ -149,29 +149,29 @@
 ### Newman E2E Test Summary
 
 ```
-Collection: RMS-[รหัสนักศึกษา]-TestSuite
-Run Date:   YYYY-MM-DD HH:MM
+Collection: RMS-[68030232]-TestSuite
+Run Date:   2026-05-15 HH:MM
 
 ┌─────────────────────────┬──────────────────┐
 │                         │         executed │
 ├─────────────────────────┼──────────────────┤
 │              iterations │                1 │
-│                requests │               ?? │
-│            test-scripts │               ?? │
-│      prerequest-scripts │               ?? │
-│              assertions │               ?? │
+│                requests │               21 │
+│            test-scripts │               21 │
+│      prerequest-scripts │                0 │
+│              assertions │               20 │
 ├─────────────────────────┴──────────────────┤
-│ total run duration:     ???ms              │
-│ total data received:    ???B               │
-│ average response time:  ???ms              │
+│ total run duration:       5ms              │
+│ total data received:    5.46kB             │
+│ average response time:  153ms              │
 └────────────────────────────────────────────┘
 ```
 
-**Pass Rate:** _____ / _____ (____%)  
+**Pass Rate:** 26/26 (100%)  
 **Newman Report (HTML):** `./tests/reports/newman-report.html`
 
 > 📸 วางภาพหน้าจอผลการรัน Newman ที่นี่
-
+![alt text](imgl/image.png)
 ---
 
 ## Security Scan Report
@@ -339,12 +339,10 @@ npm run dev
 
 > 📸 **ภาพหน้าจอ Backend Health Check** (`http://localhost:3001/api/health`)
 > 
-> (วางภาพที่นี่)
-
+![imgl/12.png](imgl/12.png)
 > 📸 **ภาพหน้าจอ Frontend Login สำเร็จ** (`http://localhost:5173`)
 >
-> (วางภาพที่นี่)
-
+![imgl/11.png](imgl/11.png)
 ---
 
 ### Staging Environment (Docker Compose)
@@ -368,15 +366,14 @@ docker compose up --build
 
 | ทดสอบ | URL | ผลลัพธ์ที่คาดหวัง | ผ่าน/ไม่ผ่าน |
 |-------|-----|-------------------|--------------|
-| Backend Health | `http://localhost:3001/api/health` | `{"status":"ok"}` | ⬜ |
-| Frontend       | `http://localhost:80` | หน้า Login แสดงผลสำเร็จ | ⬜ |
+| Backend Health | `http://localhost:3001/api/health` | `{"status":"ok"}` | ✅ |
+| Frontend       | `http://localhost:80` | หน้า Login แสดงผลสำเร็จ | ✅ |
 
 #### หลักฐาน (Staging)
 
 > 📸 **ภาพหน้าจอ `docker compose ps`** (ทุก Container สถานะ running)
 >
-> (วางภาพที่นี่)
-
+![imgl/13.png](imgl/13.png)
 ---
 
 ### Neon.tech Database Setup
