@@ -17,6 +17,8 @@ router.post('/', authenticate, requireRole('admin', 'cashier'), async (req, res)
       res.status(400).json({ error: 'orderId and amountPaid required' }); return
     }
 
+
+    
     const order = await prisma.order.findUnique({
       where: { id: orderId },
       include: { items: true },
