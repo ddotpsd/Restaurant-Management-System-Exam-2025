@@ -458,13 +458,15 @@ Build Command:  npm run build
 | Metric          | ค่า    |
 |-----------------|--------|
 | Total Tests     | 20     |
-| Tests Passed    | 19     |
-| Tests Failed    | 1     |
+| Tests Passed    | 20     |
+| Tests Failed    | 0     |
 | **Pass Rate**   | **95%** |
 
 > 📸 **ภาพหน้าจอ GitHub Actions Pipeline สำเร็จ**
 >
-> (วางภาพที่นี่)
+![imgl/23.png](imgl/23.png)
+![alt text](imgl/34.png)
+![alt text](imgl/35.png)
 
 ---
 
